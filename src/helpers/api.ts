@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-const BASE: string = '';
+const BASE: string = 'https://nodets-api-olx-production.up.railway.app';
 
 const apiFetchPOST = async (endpoint: string, body: Object) => {
     const token = Cookies.get('token');
@@ -9,7 +9,7 @@ const apiFetchPOST = async (endpoint: string, body: Object) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `${token !== undefined ? 'Bearer '+token : ''}`
         },
         body: JSON.stringify(body)
     });

@@ -21,22 +21,29 @@ export const Signin = () => {
         setRememberPassword(!rememberPassword);
     }
 
-    const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {        
+    const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {                
         e.preventDefault();
-        if(email && password) {            
+        setError('');
+        if(email && password) {                                    
             setDisabled(true);
             
-            const json = await useAPI.login(email, password);
-
+            const json = await useAPI.login(email, password);   
+                                         
             if(json.error) {
                 setError(json.error);
+                setDisabled(false);
+                if(json.error.email) {
+                    setError(json.error.email.msg);                                
+                }
+                if(json.error.password) {
+                    setError(json.error.password.msg);                        
+                }                
             } else {
-                doLogin(json.token);
-                window.location.href = "/";
-            }
-            
+                doLogin(json.token, rememberPassword);
+                window.location.href = "/"
+            }                       
         } else {
-            // preencher email e password
+            setError('Preencher email e senha!');
         }
     }
 
