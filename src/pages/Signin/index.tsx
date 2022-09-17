@@ -1,10 +1,23 @@
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
-import { PageContainer, PageTitle, Error } from '../../components/MainComponents';
+import { PageContainer, PageTitle } from '../../components/MainComponents';
+import { Error } from '../../components/partials/Error';
 import * as C from './styles';
 import { useAPI } from '../../helpers/api';
 import { doLogin } from '../../helpers/AuthHandler';
 
-export const Signin = () => {
+export const Signin = () => {   
+    type JsonTypeSignin = {
+        token: string;
+        error: {
+            email: {
+                msg: string;
+            },
+            password: {
+                msg: string;
+            }
+        }               
+    }
+
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [rememberPassword, setRememberPassword] = useState<boolean>(false);
@@ -21,16 +34,20 @@ export const Signin = () => {
         setRememberPassword(!rememberPassword);
     }
 
+    const handleErrorExit = () => {
+        setError('');
+    }
+
     const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {                
         e.preventDefault();
         setError('');
         if(email && password) {                                    
             setDisabled(true);
             
-            const json = await useAPI.login(email, password);   
+            const json: JsonTypeSignin = await useAPI.login(email, password);   
                                          
             if(json.error) {
-                setError(json.error);
+                setError(json.error.toString());
                 setDisabled(false);
                 if(json.error.email) {
                     setError(json.error.email.msg);                                
@@ -43,7 +60,7 @@ export const Signin = () => {
                 window.location.href = "/"
             }                       
         } else {
-            setError('Preencher email e senha!');
+            setError('Preencha e-mail e senha!');
         }
     }
 
@@ -51,7 +68,7 @@ export const Signin = () => {
         <PageContainer>
             <PageTitle>Login</PageTitle>
             {error !== '' &&
-                <Error>{error}</Error>
+                <Error error={error} onClick={handleErrorExit} />
             }
             <C.PageArea>
                 <form onSubmit={handleSubmit}>

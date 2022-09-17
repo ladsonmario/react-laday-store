@@ -26,18 +26,18 @@ export const PageArea = styled.div`
                 max-width: 250px; 
                 display: flex;                                          
 
-                input {
+                input, select {
                     width: 100%;                    
                     outline: 0;
                     padding: 5px;
-                    font-size: 15px;
+                    font-size: 15px;                    
                 }
                 input[type="checkbox"] {
                     width: auto;                      
                 }
                 input[type="submit"] {
                     width: auto;
-                    background-color: #FF2E63;
+                    background-color: #2732FA;
                     color: #fff;
                     border: 0;
                     border-radius: 4px;
@@ -45,6 +45,12 @@ export const PageArea = styled.div`
                     font-size: 16px;
                     font-weight: bold;
                     cursor: pointer;
+                    transition: all ease .2s;
+
+                    &:hover {
+                        opacity: .9;
+                        box-shadow: 0 0 5px #666;
+                    }                    
                 }
             }
         }

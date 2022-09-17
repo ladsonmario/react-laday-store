@@ -2,14 +2,14 @@ import styled from 'styled-components';
 
 export const HeaderArea = styled.div`
     background-color: #fff;
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #bbb;
 
     .menu--area {
         max-width: 1280px;
         display: flex;
         align-items: center;
         margin: auto;
-        height: 50px;
+        height: 60px;
 
         .logo--area {
             flex: 1;
@@ -19,14 +19,17 @@ export const HeaderArea = styled.div`
             }
 
             span:nth-child(1) {
-                color: #f00;
+                color: #87042E;
             }
             span:nth-child(2) {
-                color: #47B564                
+                color: #6e0ad6                
             }
             span:nth-child(3) {
-                color: #00f;
+                color: #8ce563;
             }
+            span:nth-child(4) {
+                color: #f28000;
+            }            
         }
         
         nav {           
@@ -38,11 +41,15 @@ export const HeaderArea = styled.div`
                 display: flex;                
                 align-items: center;
             }
-            li {
+            li, button {
                 margin: 0 20px;
-                font-size: 15px;
+                font-size: 15px; 
+                background: none;
+                border: 0;
+                cursor: pointer;               
                 
-                a:hover {
+                a:hover,
+                button:hover {
                     color: #999;
                 }
             }
@@ -52,14 +59,16 @@ export const HeaderArea = styled.div`
                 a {
                     color: #fff;
                     font-weight: bold;
-                    background-color: #08D9D6;                
+                    background-color: #EA0909;                
                     border-radius: 5px;
                     padding: 5px 10px;
                     font-size: 16px;
+                    transition: all ease .2s;
 
                     &:hover {
-                        background-color: #5CB8E4;
+                        opacity: .9;
                         color: #fff;
+                        box-shadow: 0 0 5px #666;
                     }
                 }                
             }

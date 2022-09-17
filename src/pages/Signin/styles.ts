@@ -37,7 +37,7 @@ export const PageArea = styled.div`
                 }
                 input[type="submit"] {
                     width: auto;
-                    background-color: #FF2E63;
+                    background-color: #2732FA;
                     color: #fff;
                     border: 0;
                     border-radius: 4px;
@@ -45,6 +45,12 @@ export const PageArea = styled.div`
                     font-size: 16px;
                     font-weight: bold;
                     cursor: pointer;
+                    transition: all ease .3s;
+
+                    &:hover {
+                        opacity: 0.9;
+                        box-shadow: 0 0 5px #333;
+                    }
                 }
             }
         }

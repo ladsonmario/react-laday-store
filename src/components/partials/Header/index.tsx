@@ -1,18 +1,24 @@
 import * as C from './styles';
 import { Link } from 'react-router-dom';
-import { isLogged } from '../../../helpers/AuthHandler';
+import { isLogged, doLogoff } from '../../../helpers/AuthHandler';
 
 export const Header = () => {
     const logged = isLogged();
+
+    const handleLogoff = () => {
+        doLogoff();
+        window.location.href = "/";
+    }
     return (
         <C.HeaderArea>
             <div className="menu--area">
                 <div className="logo--area">
                     <Link to="/">
                         <h1>
-                            <span>Lad</span>
-                            <span>ay</span>
-                            <span>Ads</span>
+                            <span>Laday</span>
+                            <span>A</span>
+                            <span>d</span>
+                            <span>s</span>
                         </h1>                        
                     </Link>                    
                 </div>
@@ -37,7 +43,7 @@ export const Header = () => {
                                 <Link to="">Minha Conta</Link>
                             </li>
                             <li>
-                                <Link to="">Sair</Link>
+                                <button onClick={handleLogoff}>Sair</button>
                             </li>
                             <li className="add--ad">
                                 <Link to="">Postar um anúncio</Link>
