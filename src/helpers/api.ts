@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 import qs from 'qs';
+import { AdsOptionsType } from '../types/types';
 
 const BASE: string = 'https://nodets-api-olx-production.up.railway.app';
 
@@ -25,7 +26,7 @@ const apiFetchPOST = async (endpoint: string, body: Object) => {
     return json;
 }
 
-const apiFetchGET = async (endpoint: string, body = []) => {
+const apiFetchGET = async (endpoint: string, body?: Object) => {
     const token = Cookies.get('token');
 
     const res = await fetch(`${BASE+endpoint}?${qs.stringify(body)}`, {
@@ -34,7 +35,7 @@ const apiFetchGET = async (endpoint: string, body = []) => {
             'Content-Type': 'application/json',
             'Authorization': `${token !== undefined ? 'Bearer '+token : ''}`
         }        
-    });
+    });    
 
     const json = await res.json();
 
@@ -63,6 +64,21 @@ export const useAPI = {
     },
     getStates: async () => {
         const json = await apiFetchGET('/states/list');
+        return json.states;
+    },
+    getCategory: async () => {
+        const json = await apiFetchGET('/category/list');
+        return json.category;
+    },
+    getAds: async (options: AdsOptionsType) => {
+        const json = await apiFetchGET(
+            '/ad/list',
+            options
+        );
+        return json.ads;
+    },
+    getAd: async (id: string) => {
+        const json = await apiFetchGET(`/ad/${id}`);
         return json;
     }
 }

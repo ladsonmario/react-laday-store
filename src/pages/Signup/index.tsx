@@ -36,8 +36,8 @@ export const Signup = () => {
 
     useEffect(() => {
         const getStates = async () => {
-            const states = await useAPI.getStates();            
-            setStateList(states.states);            
+            const states: StatesType[] = await useAPI.getStates();            
+            setStateList(states);            
         }
         getStates();
     }, []);

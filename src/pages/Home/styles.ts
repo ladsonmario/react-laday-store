@@ -43,4 +43,48 @@ export const PageArea = styled.div`
             }
         }
     }
+
+    .category--area {
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+
+        .category--item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 20%;
+            margin: 10px 0;                    
+
+            .img--category {
+                width: 50px;
+                height: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #fff;
+                border-radius: 50%;
+
+                img {
+                    width: 40px;
+                    height: 40px;
+                } 
+            }
+
+            span {
+                text-transform: capitalize;
+                font-size: 14px;
+                color: #555;
+                margin-top: 5px;
+            }
+        }
+    }
+`;
+
+export const AdsArea = styled.div` 
+    .ads--area {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
 `;

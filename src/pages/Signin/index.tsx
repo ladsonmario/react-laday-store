@@ -5,7 +5,7 @@ import * as C from './styles';
 import { useAPI } from '../../helpers/api';
 import { doLogin } from '../../helpers/AuthHandler';
 
-export const Signin = () => {   
+export const Signin = () => {
     type JsonTypeSignin = {
         token: string;
         error: {
