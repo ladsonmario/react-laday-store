@@ -29,7 +29,7 @@ export const Home = () => {
 
     useEffect(() => {
         const getAds = async () => {
-            const ads: AdsType[] = await useAPI.getAds({ limit: 8, sort: 'DESC' });
+            const ads: AdsType[] = await useAPI.getAds({ limit: 10, sort: 'DESC' });
             setAdList(ads);
         }
         getAds();
