@@ -46,7 +46,7 @@ export const Header = () => {
                                 <button onClick={handleLogoff}>Sair</button>
                             </li>
                             <li className="add--ad">
-                                <Link to="">Postar um anúncio</Link>
+                                <Link to="/add-ad">Postar um anúncio</Link>
                             </li>
                         </>                            
                         }                     

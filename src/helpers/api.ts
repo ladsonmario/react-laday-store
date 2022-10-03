@@ -47,6 +47,27 @@ const apiFetchGET = async (endpoint: string, body?: Object) => {
     return json;
 }
 
+const apiFetchFormData = async (endpoint: string, body: FormData) => {
+    const token = Cookies.get('token');
+
+    const res = await fetch(BASE+endpoint, {
+        method: 'POST',
+        headers: {            
+            'Authorization': `${token !== undefined ? 'Bearer '+token : ''}`
+        },
+        body
+    });
+
+    const json = await res.json();
+
+    if(json.error === 'Não autorizado') {
+        window.location.href = "/signin"
+        return;
+    }
+
+    return json;
+}
+
 export const useAPI = {
     login: async (email: string, password: string) => {
         const json = await apiFetchPOST(
@@ -79,6 +100,13 @@ export const useAPI = {
     },
     getAd: async (id: string) => {
         const json = await apiFetchGET(`/ad/${id}`);
+        return json;
+    },
+    addAd: async (formData: FormData) => {
+        const json = await apiFetchFormData(
+            '/ad/add',
+            formData
+        );
         return json;
     }
 }

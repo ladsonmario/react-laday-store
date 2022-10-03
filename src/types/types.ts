@@ -21,7 +21,8 @@ export type AdType = {
     title: string;
     category: {        
         name: string;
-        slug: string;        
+        slug: string;
+        img: string;        
     }
     price: number;
     priceNegotiable: boolean;
@@ -39,6 +40,7 @@ export type AdType = {
         priceNegotiable: boolean;
         image: string;
     }
+    error?: string;
 }
 
 export type AdsType = {
