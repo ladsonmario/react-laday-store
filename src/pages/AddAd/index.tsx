@@ -84,7 +84,7 @@ export const AddAd = () => {
     
     return (
         <PageContainer>
-            <PageTitle>Cadastro</PageTitle>
+            <PageTitle>Adicionar anúncio</PageTitle>
             {error !== '' &&
                 <Error error={error} onClick={handleErrorExit} />
             }

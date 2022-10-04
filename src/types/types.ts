@@ -33,22 +33,29 @@ export type AdType = {
         name: string;
         email: string;
     }
-    others: {
-        _id: string;
-        title: string;
-        price: number;
-        priceNegotiable: boolean;
-        image: string;
-    }
+    others: OthersAdsType[],
     error?: string;
 }
 
-export type AdsType = {
+export type OthersAdsType = {    
     _id: string;
     title: string;
     price: number;
     priceNegotiable: boolean;
-    image: string;
+    image: string;    
+}
+
+export type JsonAds = {
+    ads?: AdsType[];
+    total?: number;
+}
+
+export type AdsType = {    
+    _id: string;
+    title: string;
+    price: number;
+    priceNegotiable: boolean;
+    image: string;        
 }
 
 export type AdsOptionsType = {

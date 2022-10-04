@@ -96,7 +96,7 @@ export const useAPI = {
             '/ad/list',
             options
         );
-        return json.ads;
+        return json;
     },
     getAd: async (id: string) => {
         const json = await apiFetchGET(`/ad/${id}`);

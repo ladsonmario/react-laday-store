@@ -2,30 +2,41 @@ import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { PageContainer } from '../../components/MainComponents';
+import { PageContainer, PageTitle } from '../../components/MainComponents';
 import { AdType } from '../../types/types';
 import { useAPI } from '../../helpers/api';
 import { formatDate, convertRealFormat } from '../../helpers/assistant';
+import { AdItem } from '../../components/partials/AdItem';
 import * as C from './styles';
 
 export const AdPage = () => {
     const params = useParams();
     const navigate = useNavigate();
+    const id = params.id as string;
 
-    const [ad, setAd] = useState<AdType>();
+    const [ad, setAd] = useState<AdType>();    
     const [loading, setLoading] = useState<boolean>(true);
 
-    useEffect(() => {
+    useEffect(() => {        
         const getAd = async (id: string) => {
+            window.scroll({ top: 0, behavior: 'smooth' });
+            
+            setAd(undefined);                        
+            setLoading(true);            
+            
             const ad: AdType = await useAPI.getAd(id);              
             setAd(ad);
+
+            console.log(ad);
+            
             if(ad.error) {
                 navigate("*");
-            }
+            } 
+
             setLoading(false);
         }
-        getAd(params.id as string);
-    }, []);
+        getAd(id);
+    }, [id, navigate]);
 
     let price: string = '';
     if(ad?.priceNegotiable) {
@@ -151,6 +162,16 @@ export const AdPage = () => {
                     </div>
                 </div>
             </C.PageArea>
+            <C.OthersAds>
+                    {ad?.others && ad.others.length > 0 &&
+                        <PageTitle>Outros Anúncios</PageTitle>
+                    }
+                    <div className="others--ads--item">                    
+                        {ad?.others && ad.others.length > 0 && ad.others.map((item, index) => (                                                    
+                            <AdItem data={item} key={index} />                                                                            
+                        ))}
+                    </div>              
+            </C.OthersAds>
         </PageContainer>
     );
 }

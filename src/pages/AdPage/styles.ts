@@ -168,3 +168,11 @@ export const BreadCrumb = styled.div`
         font-weight: bold; 
     }
 `;
+
+export const OthersAds = styled.div`
+    .others--ads--item {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;        
+    }
+`;

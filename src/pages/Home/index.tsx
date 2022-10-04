@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { StatesType, CategoryType, AdsType } from '../../types/types';
+import { StatesType, CategoryType, AdsType, JsonAds } from '../../types/types';
 import { PageContainer, PageTitle } from '../../components/MainComponents';
 import { AdItem } from '../../components/partials/AdItem';
 import * as C from './styles';
@@ -29,8 +29,8 @@ export const Home = () => {
 
     useEffect(() => {
         const getAds = async () => {
-            const ads: AdsType[] = await useAPI.getAds({ limit: 12, sort: 'DESC' });
-            setAdList(ads);
+            const json: JsonAds = await useAPI.getAds({ limit: 12, sort: 'DESC' });
+            setAdList(json.ads as AdsType[]);
         }
         getAds();
     }, []);
@@ -52,7 +52,7 @@ export const Home = () => {
                     </div>
                     <div className="category--area">
                         {categoryList.map((item, index) => (
-                            <Link to={`/ads/cat=${item.slug}`} key={index} className="category--item">
+                            <Link to={`/ads?cat=${item.slug}`} key={index} className="category--item">
                                 <div className="img--category">
                                     <img src={item.img} alt="" />
                                 </div>                            
