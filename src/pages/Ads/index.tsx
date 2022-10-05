@@ -5,11 +5,10 @@ import { PageContainer, PageTitle } from '../../components/MainComponents';
 import { AdItem } from '../../components/partials/AdItem';
 import * as C from './styles';
 import { useAPI } from '../../helpers/api';
-import { Timeout } from 'react-number-format/types/types';
 
-let timer: Timeout;
+let timer: number = 0;
 
-export const Ads = () => { 
+export const Ads = () => {         
     const navigate = useNavigate();
 
     const useQueryString = () => {
@@ -37,28 +36,26 @@ export const Ads = () => {
         setStateLoc(stateLoc);
     }
     const handleCat = (item: string) => {
-        item === cat ? setCat('') : setCat(item);        
+        item === cat ? setCat('') : setCat(item);
+        setCurrentPage(1);        
     }
     const formPreventDefaul = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
     }
     const handlePaginationItem = (page: number) => {
-        setCurrentPage(page);
-        console.log(page);
+        setCurrentPage(page);        
     }
 
-    const getAdsList = async () => {    
-        let offset: number = (currentPage - 1) * 9;
+    const getAdsList = async () => {        
+        let offset: number;       
+        currentPage === 1 ? offset = 0 : offset = (currentPage - 1) * 9;        
         
         const json: JsonAds = await useAPI.getAds({
             sort: 'DESC', limit: 9, q, cat, state: stateLoc, offset
         });
 
-        setAdList(json.ads as AdsType[]);
-        console.log(json.ads);
-        console.log(json.total);
-        console.log(q, cat, stateLoc, offset, currentPage);
-        setAdsTotal(json.total as number);
+        setAdList(json.ads as AdsType[]);        
+        setAdsTotal(json.total as number);                
         setOpacity(1);
         setLoading(false);
     }
@@ -68,15 +65,15 @@ export const Ads = () => {
             setPageCount( Math.ceil( adsTotal / adList.length ) );
         } else {
             setPageCount(0);
-        }
+        }        
     }, [adsTotal]);
 
     useEffect(() => {
-        setOpacity(0.3);
-        getAdsList();
+        setOpacity(0.3);        
+        getAdsList();       
     }, [currentPage]);
 
-    useEffect(() => {
+    useEffect(() => {        
         let newQuery: string[] = [];
 
         if(q) {
@@ -92,12 +89,12 @@ export const Ads = () => {
         navigate(`/ads?${newQuery.join('&')}`, { replace: true });
         
         if(timer) {
-            clearTimeout(timer);
+            window.clearTimeout(timer);
         }
         
-        timer = setTimeout(getAdsList, 2000);        
-        setOpacity(0.3);
-        setCurrentPage(1);
+        timer = window.setTimeout(getAdsList, 2000);                
+        setOpacity(0.3);         
+        setCurrentPage(1);        
     }, [q, cat, stateLoc]);
 
     useEffect(() => {
