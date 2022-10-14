@@ -5,7 +5,7 @@ export const ErrorContainer = styled.div`
     color: #fff;
     border: 2px inset #f00;
     padding: 6px;
-    margin-bottom: 5px;
+    margin: 5px 0;
     font-size: 16px;
     display: flex;
     justify-content: space-between;

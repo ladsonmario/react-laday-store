@@ -4,11 +4,11 @@ import { AdsOptionsType } from '../types/types';
 
 const BASE: string = 'https://nodets-api-olx-production.up.railway.app';
 
-const apiFetchPOST = async (endpoint: string, body: Object) => {
+const apiFetchPostAndPut = async (endpoint: string, body: Object, fetchMethod: string) => {
     const token = Cookies.get('token');
 
     const res = await fetch(BASE+endpoint, {
-        method: 'POST',
+        method: fetchMethod,
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `${token !== undefined ? 'Bearer '+token : ''}`
@@ -47,11 +47,11 @@ const apiFetchGET = async (endpoint: string, body?: Object) => {
     return json;
 }
 
-const apiFetchFormData = async (endpoint: string, body: FormData) => {
+const apiFetchFormData = async (endpoint: string, body: FormData, fetchMethod: string) => {
     const token = Cookies.get('token');
 
     const res = await fetch(BASE+endpoint, {
-        method: 'POST',
+        method: fetchMethod,
         headers: {            
             'Authorization': `${token !== undefined ? 'Bearer '+token : ''}`
         },
@@ -68,18 +68,40 @@ const apiFetchFormData = async (endpoint: string, body: FormData) => {
     return json;
 }
 
+const apiFetchDELETE = async (endpoint: string) => {
+    const token = Cookies.get('token');
+
+    const res = await fetch(BASE+endpoint, {
+        method: 'DELETE',
+        headers: {            
+            'Authorization': `${token !== undefined ? 'Bearer '+token : ''}`
+        }
+    });
+
+    const json = await res.json();
+
+    if(json.error === 'Não autorizado') {
+        window.location.href = "/signin"
+        return;
+    }
+
+    return json;
+}
+
 export const useAPI = {
     login: async (email: string, password: string) => {
-        const json = await apiFetchPOST(
+        const json = await apiFetchPostAndPut(
             '/user/signin',
-            { email, password }
+            { email, password },
+            'POST'
         );
         return json;
     },
     createUser: async (name: string, email: string, state: string, password: string) => {
-        const json = await apiFetchPOST(
+        const json = await apiFetchPostAndPut(
             '/user/signup',
-            { name, email, state, password }
+            { name, email, state, password },
+            'POST'
         );
         return json;
     },
@@ -105,7 +127,36 @@ export const useAPI = {
     addAd: async (formData: FormData) => {
         const json = await apiFetchFormData(
             '/ad/add',
-            formData
+            formData,
+            'POST'
+        );
+        return json;
+    },
+    getUser: async () => {
+        const json = await apiFetchGET(
+            '/user/me'
+        );
+        return json;
+    },
+    adUpdate: async (id: string, formData: FormData) => {
+        const json = await apiFetchFormData(
+            `/ad/${id}`,
+            formData,
+            'PUT'
+        );
+        return json;
+    },
+    userUpdate: async (options: Object) => {
+        const json = await apiFetchPostAndPut(
+            '/user/me',
+            options,
+            'PUT'
+        );
+        return json;
+    },
+    delAd: async (id: String) => {
+        const json = await apiFetchDELETE(
+            `/ad/${id}`
         );
         return json;
     }

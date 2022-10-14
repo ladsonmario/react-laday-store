@@ -19,7 +19,8 @@ export type AdType = {
     status: boolean;            
     dateCreated: Date;
     title: string;
-    category: {        
+    category: {   
+        _id: string;     
         name: string;
         slug: string;
         img: string;        
@@ -28,7 +29,10 @@ export type AdType = {
     priceNegotiable: boolean;
     description: string;
     views: number;
-    images: string[];
+    images: [{
+        url: string;
+        default: boolean;
+    }];
     userInfo: {
         name: string;
         email: string;

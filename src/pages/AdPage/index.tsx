@@ -25,9 +25,7 @@ export const AdPage = () => {
             setLoading(true);            
             
             const ad: AdType = await useAPI.getAd(id);              
-            setAd(ad);
-
-            console.log(ad);
+            setAd(ad);            
             
             if(ad.error) {
                 navigate("*");
@@ -96,7 +94,7 @@ export const AdPage = () => {
                                     <Slide>
                                         {ad?.images.map((img, index) => (                                    
                                             <div className="each--slide" key={index}>
-                                                <img src={img} alt="" />
+                                                <img src={img.toString()} alt="" />
                                             </div>
                                         ))} 
                                     </Slide>

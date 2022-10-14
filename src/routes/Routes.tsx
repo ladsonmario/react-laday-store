@@ -6,6 +6,7 @@ import { NotFound } from '../pages/NotFound';
 import { AdPage } from '../pages/AdPage';
 import { AddAd } from '../pages/AddAd';
 import { Ads } from '../pages/Ads';
+import { MyAcc } from '../pages/MyAcc';
 import { PrivateRoute } from '../components/HandleRoutePrivate';
 
 export const Routes = () => {
@@ -16,6 +17,7 @@ export const Routes = () => {
         {path: "/ad/:id", element: <AdPage />},
         {path: "/add-ad", element: <PrivateRoute><AddAd /></PrivateRoute>},
         {path: "/ads", element: <Ads />},
+        {path: "/my-acc", element: <MyAcc />},
         {path: "*", element: <NotFound />}        
     ]);
 }

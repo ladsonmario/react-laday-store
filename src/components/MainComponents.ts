@@ -9,5 +9,5 @@ export const PageContainer = styled.div`
 
 export const PageTitle = styled.h2`
     margin: 13px 0;
-    font-size: 22px;
+    font-size: 22px;    
 `;

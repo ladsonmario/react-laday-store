@@ -40,7 +40,7 @@ export const Header = () => {
                         {logged &&
                         <>
                             <li>
-                                <Link to="">Minha Conta</Link>
+                                <Link to="/my-acc">Minha Conta</Link>
                             </li>
                             <li>
                                 <button onClick={handleLogoff}>Sair</button>
