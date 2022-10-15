@@ -98,7 +98,7 @@ export const HeaderArea = styled.div<HeaderAreaType>`
     }
 
     @media(max-width: 600px) { 
-        padding: 5px 0;       
+        padding-top: 5px;       
         
         .menu--area {
             height: auto;
@@ -121,7 +121,9 @@ export const HeaderArea = styled.div<HeaderAreaType>`
                 ul { 
                     height: ${props => props.displayMenu ? '107px' : '0'};                    
                     flex-direction: column;
-                    transition: all ease .5s;                    
+                    transition: all ease .3s;
+                    position: relative;
+                    right: ${props => props.displayMenu ? '0' : '999px'};                                         
                 } 
                 
                 li {

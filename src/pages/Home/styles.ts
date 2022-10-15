@@ -3,8 +3,7 @@ import styled from 'styled-components';
 export const PageArea = styled.div`    
     background-color: #ddd;
     padding: 20px 0;
-    border-bottom: 1px solid #bbb;
-    position: relative;            
+    border-bottom: 1px solid #bbb;      
 
     .search--area {        
         background-color: #9bb83c;
