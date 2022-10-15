@@ -1,16 +1,25 @@
 import * as C from './styles';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import MenuMobile from './menu-button.png';
 import { isLogged, doLogoff } from '../../../helpers/AuthHandler';
 
 export const Header = () => {
     const logged = isLogged();
 
+    const [display, setDisplay] = useState<boolean>(false);
+
     const handleLogoff = () => {
         doLogoff();
         window.location.href = "/";
     }
+
+    const handleMenuMobile = () => {
+        setDisplay(!display);
+    }
+
     return (
-        <C.HeaderArea>
+        <C.HeaderArea displayMenu={display}>
             <div className="menu--area">
                 <div className="logo--area">
                     <Link to="/">
@@ -20,7 +29,10 @@ export const Header = () => {
                             <span>d</span>
                             <span>s</span>
                         </h1>                        
-                    </Link>                    
+                    </Link>
+                    <button className="menu--mobile" onClick={handleMenuMobile}>
+                        <img src={MenuMobile} alt="" />
+                    </button>                    
                 </div>
                 <nav>
                     <ul>

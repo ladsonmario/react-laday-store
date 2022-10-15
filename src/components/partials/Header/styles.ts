@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 
-export const HeaderArea = styled.div`
+type HeaderAreaType = { 
+    displayMenu: boolean; 
+};
+
+export const HeaderArea = styled.div<HeaderAreaType>`
     background-color: #fff;
-    border-bottom: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;    
 
     .menu--area {
         max-width: 1280px;
@@ -13,9 +17,28 @@ export const HeaderArea = styled.div`
 
         .logo--area {
             flex: 1;
+            width: 100%;
+            position: relative;
+            
+            .menu--mobile {
+                position: absolute;
+                right: 20px;
+                top: 2px;                
+                display: none;
+                border: 0;
+                background: none;
+                cursor: pointer;                
+
+                img {
+                    position: relative;
+                    width: 30px;
+                    height: 30px;
+                }
+            }
             
             h1 {
                 font-size: 26px;
+                margin: 0 10px;                
             }
 
             span:nth-child(1) {
@@ -59,18 +82,51 @@ export const HeaderArea = styled.div`
                 a {
                     color: #fff;
                     font-weight: bold;
-                    background-color: #EA0909;                
+                    background-color: #f28000;                
                     border-radius: 5px;
                     padding: 5px 10px;
                     font-size: 16px;
                     transition: all ease .2s;
 
-                    &:hover {
-                        opacity: .9;
+                    &:hover {                        
                         color: #fff;
-                        box-shadow: 0 0 5px #666;
+                        background-color: #d97200;
                     }
                 }                
+            }
+        }
+    }
+
+    @media(max-width: 600px) { 
+        padding: 5px 0;       
+        
+        .menu--area {
+            height: auto;
+            flex-direction: column;
+
+            .logo--area {
+                margin: 10px 0;
+
+                .menu--mobile {
+                    display: block;
+                }
+
+                h1 {
+                    text-align: center;
+                }
+            }
+
+            nav {
+
+                ul { 
+                    height: ${props => props.displayMenu ? '107px' : '0'};                    
+                    flex-direction: column;
+                    transition: all ease .5s;                    
+                } 
+                
+                li {
+                    margin-bottom: 15px;
+                }
             }
         }
     }

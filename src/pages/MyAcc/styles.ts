@@ -61,13 +61,20 @@ export const PageArea = styled.div`
             list-style: none;            
 
             li {
+                background-color: #fff;
                 list-style: none;
                 display: flex;
                 align-items: center;
                 gap: 20px;
-                box-shadow: 0 0 5px #999;
-                padding: 10px;
-                margin-bottom: 20px;                
+                border-top: 1px solid #ddd;
+                border-bottom: 1px solid #ddd;                
+                padding: 10px;                
+                
+                &:nth-child(even) {
+                    background-color: #eee;
+                    border-top: 1px solid #ccc;
+                    border-bottom: 1px solid #ccc;
+                }
 
                 img {
                     width: 100px;
@@ -94,10 +101,29 @@ export const PageArea = styled.div`
                     .ad--img--tools {
                         margin: 0 5px;
                         cursor: pointer;
+                        border: 0;
+                        padding: 5px;
+                        border-radius: 5px;
+                        transition: all ease .5s;
+                        opacity: 0.8;                        
+
+                        &:nth-child(1) {
+                            background-color: #6B60E0;
+                        }
+                        &:nth-child(2) {
+                            background-color: #E8C61D;
+                        }
+                        &:nth-child(3) {
+                            background-color: #F43D40;
+                        }
 
                         img{
                             width: 30px;
                             height: 30px;
+                        }
+
+                        &:hover {
+                            opacity: 1;
                         }
                     }
                 }

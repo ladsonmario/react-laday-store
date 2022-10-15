@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { PageContainer, PageTitle } from '../../components/MainComponents';
 import { Error } from '../../components/partials/Error';
 import { formatDate, convertRealFormat } from '../../helpers/assistant';
+import { doLogoff } from '../../helpers/AuthHandler';
 import { CategoryType, AdType, StatesType } from '../../types/types';
 import { NumericFormat } from 'react-number-format';
 import editSvg from './images/edit.svg';
@@ -53,6 +54,10 @@ export const MyAcc = () => {
         password?: string;
     }
 
+    type FetchDeleteType = {
+        error: string;
+    }
+
     const fileFiled = useRef() as React.MutableRefObject<HTMLInputElement>;
 
     const [name, setName] = useState<string>('');
@@ -75,6 +80,8 @@ export const MyAcc = () => {
     const [adInfo, setAdInfo] = useState<AdType>();
     const [disabled, setDisabled] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+    const [errorGeral, setErrorGeral] = useState<boolean>(false);
+    const [errorModal, setErrorModal] = useState<boolean>(false);
 
     useEffect(() => {        
         getInfoUser();
@@ -129,6 +136,8 @@ export const MyAcc = () => {
     }    
     const handleErrorExit = () => {
         setError('');
+        setErrorModal(false);
+        setErrorGeral(false);
     }    
     const reset = () => {
         setAdInfo(undefined);
@@ -251,6 +260,7 @@ export const MyAcc = () => {
 
         if(json.error) {
             setError(json.error.toString());
+            setErrorModal(true);
             setDisabled(false);
             if(json.error.name) {
                 setError(json.error.name.msg);                                
@@ -267,13 +277,24 @@ export const MyAcc = () => {
         }
     }
 
-    const handleDelUser = (id: string) => {
+    const handleDelUser = async (id: string) => {
+        if(window.confirm('ATENÇÃO, você tem certeza que deseja EXCLUIR a sua conta?')) {
+            const json = await useAPI.userDel(id);            
 
+            if(json.error) {
+                setErrorGeral(true);
+                setError(json.error);
+            } else {
+                doLogoff();
+                alert('Sua conta foi excluida com sucesso!');
+                window.location.href = '/';                
+            }
+        }
     }
 
     const handleDelAd = async (id: string, title: string) => {
         if(window.confirm(`Você tem certeza que deseja excluir o anúncio ${title}?`)) {
-            const json = await useAPI.delAd(id);
+            const json: FetchDeleteType = await useAPI.delAd(id);            
 
             if(json.error) {
                 alert(json.error);
@@ -286,10 +307,10 @@ export const MyAcc = () => {
 
     return (
         <PageContainer>
-            <PageTitle>Minha Conta</PageTitle>
-            {error !== '' &&
+            <PageTitle>Minha Conta</PageTitle> 
+            {error !== '' && errorGeral &&
                 <Error error={error} onClick={handleErrorExit} />
-            }
+            }           
             <C.PageArea>
                 <h3>Configurações gerais do perfil</h3>
                 <div className="user--info">
@@ -325,12 +346,12 @@ export const MyAcc = () => {
                     <div className="user--tools">
                         <button className="edit--button--user" onClick={handleEditUser}>Editar dados</button>
                         <button className="del--buton--user" onClick={() => handleDelUser(userInfo?._id as string)}>Excluir conta</button>
-                    </div>                  
+                    </div>                                      
                 </div>  
                 {modalUser &&
                     <C.Modal>
                         <form onSubmit={handleSubmitUserEdit}>
-                            {error !== '' &&
+                            {error !== '' && errorModal &&
                                 <Error error={error} onClick={handleErrorExit} />
                             }
                             <div className="exit" onClick={handleExitModal}>❌</div>
@@ -381,7 +402,7 @@ export const MyAcc = () => {
                             <div className="input--container">
                                 <div className="name--input"></div>
                                 <div className="area--input">
-                                <small>Caso queirar atualizar sua senha digite a nova e repita, caso contrario deixe o campo em branco.</small>                                             
+                                <small>Caso queirar atualizar sua senha digite a nova e repita, caso contrário deixe o campo em branco.</small>                                             
                                 </div>                        
                             </div>                            
                             <div className="input--container">
@@ -451,7 +472,7 @@ export const MyAcc = () => {
                                 {modalAd &&
                                     <C.Modal>                                
                                         <form onSubmit={handleSubmitUpdateAd}>
-                                            {error !== '' &&
+                                            {error !== '' && errorModal &&
                                                 <Error error={error} onClick={handleErrorExit} />
                                             }
                                             <div className="exit" onClick={handleExitModal}>❌</div>

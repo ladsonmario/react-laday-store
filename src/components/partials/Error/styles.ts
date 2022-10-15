@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 export const ErrorContainer = styled.div`
-    background-color: #E20F12;
+    background-color: #F93A3D;
     color: #fff;
     border: 2px inset #f00;
     padding: 6px;
-    margin: 5px 0;
+    margin: 10px 0;
     font-size: 16px;
     display: flex;
     justify-content: space-between;

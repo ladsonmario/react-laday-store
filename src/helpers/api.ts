@@ -105,6 +105,26 @@ export const useAPI = {
         );
         return json;
     },
+    getUser: async () => {
+        const json = await apiFetchGET(
+            '/user/me'
+        );
+        return json;
+    },
+    userUpdate: async (options: Object) => {
+        const json = await apiFetchPostAndPut(
+            '/user/me',
+            options,
+            'PUT'
+        );
+        return json;
+    },
+    userDel: async (id: string) => {
+        const json = await apiFetchDELETE(
+            `/user/${id}`
+        );
+        return json;
+    },
     getStates: async () => {
         const json = await apiFetchGET('/states/list');
         return json.states;
@@ -131,13 +151,7 @@ export const useAPI = {
             'POST'
         );
         return json;
-    },
-    getUser: async () => {
-        const json = await apiFetchGET(
-            '/user/me'
-        );
-        return json;
-    },
+    },    
     adUpdate: async (id: string, formData: FormData) => {
         const json = await apiFetchFormData(
             `/ad/${id}`,
@@ -145,15 +159,7 @@ export const useAPI = {
             'PUT'
         );
         return json;
-    },
-    userUpdate: async (options: Object) => {
-        const json = await apiFetchPostAndPut(
-            '/user/me',
-            options,
-            'PUT'
-        );
-        return json;
-    },
+    },    
     delAd: async (id: String) => {
         const json = await apiFetchDELETE(
             `/ad/${id}`
