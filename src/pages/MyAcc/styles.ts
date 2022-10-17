@@ -138,7 +138,7 @@ export const PageArea = styled.div`
             .info--container {                
     
                 .info--key {
-                    width: 50px;
+                    width: 60px;
                     text-align: start;                    
                 }
             }
