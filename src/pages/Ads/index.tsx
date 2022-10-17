@@ -133,13 +133,15 @@ export const Ads = () => {
                             </select>
                         </div>
                         <div className="state--cat">
-                            <span className="title">Categorias</span>                            
-                            {categoryList.map((item, index) => (
-                                <div className={item.slug === cat ? 'category--item active' : 'category--item'} key={index} onClick={() => handleCat(item.slug)}>
-                                    <img src={item.img} alt="" />
-                                    <span>{item.name}</span>                                        
-                                </div>
-                            ))}                            
+                            <span className="title">Categorias</span>  
+                            <div className="list">
+                                {categoryList.map((item, index) => (
+                                    <div className={item.slug === cat ? 'category--item active' : 'category--item'} key={index} onClick={() => handleCat(item.slug)}>
+                                        <img src={item.img} alt="" />
+                                        <span>{item.name}</span>                                        
+                                    </div>
+                                ))}
+                            </div>                                                        
                         </div>
                     </form>
                 </div>

@@ -130,6 +130,27 @@ export const PageArea = styled.div`
             }
         }
     }
+
+    @media(max-width: 600px) {
+        .user--info {
+            flex-direction: column;
+
+            .info--container {                
+    
+                .info--key {
+                    width: 50px;
+                    text-align: start;                    
+                }
+            }
+        }
+
+        .ads--list {
+            .ad--tools {
+                flex-direction: column;
+                gap: 5px;
+            }         
+        }
+    }
 `;
 
 type PageFakeType = { height?: number; }
@@ -156,7 +177,8 @@ export const Modal = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
+    z-index: 1;   
 
     form {
         padding: 30px;
@@ -164,6 +186,7 @@ export const Modal = styled.div`
         max-width: 700px;
         width: 100%;
         position: relative;
+        z-index: 2;
 
         .exit {
             position: absolute;
@@ -234,5 +257,30 @@ export const Modal = styled.div`
                     }                    
                 }
             }
+        }
+    }
+
+    @media(max-width: 600px) {       
+        
+        form {
+            .input--container {
+                flex-direction: column;
+
+                .name--input {
+                    width: 100%;
+                    text-align: start;
+                    margin: 0;
+                }
+
+                .area--input {
+                    max-width: 100%;
+
+                    input[type="submit"] {
+                        width: 100%;
+                        padding: 10px;
+                    }
+                }
+            }
+        }
     }
 `;

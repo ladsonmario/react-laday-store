@@ -97,4 +97,36 @@ export const PageArea = styled.div`
             }
         }
     }
+
+    @media(max-width: 600px) {
+        flex-direction: column;
+        padding: 0 10px;
+
+        .left--side {
+            width: auto;
+
+            .state--cat .list {
+                display: flex;
+                flex-wrap: wrap;
+
+                .category--item {
+                    width: 33%;
+                    flex-direction: column;
+
+                    img {
+                        margin: 0;
+                    }
+                    span {
+                        font-size: 13px;
+                    }
+                }
+            }
+        }
+
+        .right--side {
+            .ad--list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    }
 `;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const PageArea = styled.div`    
-    padding: 15px;;
+    padding: 15px;
     background-color: #fff;
     box-shadow: 0 0 5px #999;
     border-radius: 3px;
@@ -50,6 +50,30 @@ export const PageArea = styled.div`
                     &:hover {
                         opacity: 0.9;
                         box-shadow: 0 0 5px #333;
+                    }
+                }
+            }
+        }
+    }
+
+    @media(max-width: 600px) {
+        
+        form {
+            .input--container {
+                flex-direction: column;
+
+                .name--input {
+                    width: 100%;
+                    text-align: start;
+                    margin: 0;
+                }
+
+                .area--input {
+                    max-width: 100%;
+
+                    input[type="submit"] {
+                        width: 100%;
+                        padding: 10px;
                     }
                 }
             }

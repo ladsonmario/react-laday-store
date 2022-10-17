@@ -120,10 +120,10 @@ export const HeaderArea = styled.div<HeaderAreaType>`
 
                 ul { 
                     height: ${props => props.displayMenu ? '107px' : '0'};                    
+                    right: ${props => props.displayMenu ? '0' : '999px'};
                     flex-direction: column;
                     transition: all ease .3s;
-                    position: relative;
-                    right: ${props => props.displayMenu ? '0' : '999px'};                                         
+                    position: relative;                                                             
                 } 
                 
                 li {

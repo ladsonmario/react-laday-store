@@ -103,6 +103,20 @@ export const PageArea = styled.div`
             padding: 30px;
         }
 
+        .button-speak {
+            color: #fff;
+            background-color: #f28000;
+            font-weight: bold;
+            padding: 15px;                    
+            border-radius: 5px;
+            font-size: 18px;
+            text-align: center;
+
+            &:hover {
+                background-color: #d97200;
+            }
+        }
+
         .ad--price {
 
             .priceneg {
@@ -128,6 +142,26 @@ export const PageArea = styled.div`
                     color: #999;
                 }
             }
+        }
+    }
+
+    @media(max-width: 600px) {
+        flex-direction: column;
+        padding: 0 10px;
+
+        .left--side {
+
+            .ad--name--date {
+                flex-direction: column;
+
+                .ad--views {
+                    margin-top: 10px;                    
+                }
+            }
+        }
+
+        .right--side {
+            width: auto;
         }
     }
 `;
@@ -167,12 +201,31 @@ export const BreadCrumb = styled.div`
         margin: 0 5px;
         font-weight: bold; 
     }
+
+    @media(max-width: 600px) {
+        padding: 0 10px;
+        font-size: 14px;
+        align-items: center;
+    }
 `;
 
 export const OthersAds = styled.div`
     .others--ads--item {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 20px;        
+        gap: 20px;                
+    }
+
+    @media(max-width: 900px) {
+        .others--ads--item {
+            grid-template-columns: repeat(3, 1fr);
+        }        
+    }
+
+    @media(max-width: 600px) {
+        padding: 0 10px;
+        .others--ads--item {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
 `;

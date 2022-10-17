@@ -17,12 +17,17 @@ export const Header = () => {
     const handleMenuMobile = () => {
         setDisplay(!display);
     }
+    const closeMenuMobile = () => {
+        if(display) {
+            setDisplay(!display);
+        }        
+    }
 
     return (
         <C.HeaderArea displayMenu={display}>
             <div className="menu--area">
                 <div className="logo--area">
-                    <Link to="/">
+                    <Link to="/" onClick={closeMenuMobile}>
                         <h1>
                             <span>Laday</span>
                             <span>A</span>
@@ -38,26 +43,26 @@ export const Header = () => {
                     <ul>
                         {!logged &&
                         <>
-                            <li>
+                            <li onClick={closeMenuMobile}>
                                 <Link to="/signin">Login</Link>
                             </li>
-                            <li>
+                            <li onClick={closeMenuMobile}>
                                 <Link to="/signup">Cadastro</Link>
                             </li>
-                            <li className="add--ad">
+                            <li onClick={closeMenuMobile} className="add--ad">
                                 <Link to="/signin">Postar um anúncio</Link>
                             </li>
                         </>                            
                         }   
                         {logged &&
                         <>
-                            <li>
+                            <li onClick={closeMenuMobile}>
                                 <Link to="/my-acc">Minha Conta</Link>
                             </li>
-                            <li>
+                            <li onClick={closeMenuMobile}>
                                 <button onClick={handleLogoff}>Sair</button>
                             </li>
-                            <li className="add--ad">
+                            <li onClick={closeMenuMobile} className="add--ad">
                                 <Link to="/add-ad">Postar um anúncio</Link>
                             </li>
                         </>                            

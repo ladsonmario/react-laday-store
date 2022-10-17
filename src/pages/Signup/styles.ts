@@ -55,4 +55,28 @@ export const PageArea = styled.div`
             }
         }
     }
+
+    @media(max-width: 600px) {
+        
+        form {
+            .input--container {
+                flex-direction: column;
+
+                .name--input {
+                    width: 100%;
+                    text-align: start;
+                    margin: 0;
+                }
+
+                .area--input {
+                    max-width: 100%;
+
+                    input[type="submit"] {
+                        width: 100%;
+                        padding: 10px;
+                    }
+                }
+            }
+        }
+    }
 `;

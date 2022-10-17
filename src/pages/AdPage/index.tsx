@@ -146,6 +146,7 @@ export const AdPage = () => {
                             </div>
                         }
                     </div>
+                    <a className="button-speak" href={`malito:${ad?.userInfo.email}`}>Falar com o vendedor</a>
                     <div className="box">
                         {loading &&
                             <C.PageFake height={40} />
