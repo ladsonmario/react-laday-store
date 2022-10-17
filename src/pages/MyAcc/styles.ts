@@ -178,7 +178,48 @@ export const Modal = styled.div`
     display: flex;
     justify-content: center;
     align-items: center; 
-    z-index: 1;   
+    z-index: 1;
+
+    .exit {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 25px;
+        cursor: pointer;
+    }
+
+    .panel--adm--container {        
+        padding: 30px;
+        background-color: #fff;
+        max-width: 700px;
+        width: 100%;        
+
+        .panel--header {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            border-bottom: 1px solid #ddd;            
+        }
+
+        .options--list {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;         
+
+            button {
+                border: 0;
+                outline: 0;
+                background: none;
+                color: #216fdb;
+                font-size: 15px;
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }            
+        }
+    }
 
     form {
         padding: 30px;
@@ -187,14 +228,6 @@ export const Modal = styled.div`
         width: 100%;
         position: relative;
         z-index: 2;
-
-        .exit {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            font-size: 25px;
-            cursor: pointer;
-        }
 
         .button--true--field {
             border: 0;

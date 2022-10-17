@@ -129,6 +129,18 @@ export const useAPI = {
         const json = await apiFetchGET('/states/list');
         return json.states;
     },
+    addState: async (name: string) => {
+        const json = await apiFetchPostAndPut(
+            '/states/add',
+            { name },
+            'POST'
+        );
+        return json;
+    },
+    delState: async (id: string) => {
+        const json = await apiFetchDELETE(`/states/${id}`);
+        return json;
+    },
     getCategory: async () => {
         const json = await apiFetchGET('/category/list');
         return json.category;

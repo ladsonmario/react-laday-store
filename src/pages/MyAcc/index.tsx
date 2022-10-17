@@ -17,6 +17,7 @@ export const MyAcc = () => {
         _id: string;
         name: string;
         email: string;
+        administrator: boolean;
         state: {
             _id: string;
             name: string;
@@ -58,17 +59,33 @@ export const MyAcc = () => {
         error: string;
     }
 
+    type JsonAddState = {
+        name: string;
+        error: {
+            name: {
+                msg: string;
+            }
+        }
+    }
+
+    type JsonDelState = {
+        error: string;
+    }
+
     const fileFiled = useRef() as React.MutableRefObject<HTMLInputElement>;
 
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
+    const [nameState, setNameState] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordConfirm, setPasswordConfirm] = useState<string>('');
     const [stateLoc, setStateLoc] = useState<string>('');
     const [title, setTitle] = useState<string>('');
     const [catList, setCatList] = useState<CategoryType[]>([]);
     const [stateList, setStateList] = useState<StatesType[]>([]);
-    const [cat, setCat] = useState<string>('');    
+    const [cat, setCat] = useState<string>(''); 
+    const [slug, setSlug] = useState<string>('');
+    const [nameCat, setNameCat] = useState<string>('');
     const [price, setPrice] = useState<any>('');
     const [priceNeg, setPriceNeg] = useState<boolean>(false);
     const [desc, setDesc] = useState<string>('');
@@ -76,38 +93,37 @@ export const MyAcc = () => {
     const [loadingInfo, setLoadingInfo] = useState<boolean>(false);
     const [modalAd, setModalAd] = useState<boolean>(false);
     const [modalUser, setModalUser] = useState<boolean>(false);
+    const [modalAdm, setModalAdm] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<UserInfoType>();
     const [adInfo, setAdInfo] = useState<AdType>();
     const [disabled, setDisabled] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
     const [errorGeral, setErrorGeral] = useState<boolean>(false);
     const [errorModal, setErrorModal] = useState<boolean>(false);
+    const [addStateForm, setAddStateForm] = useState<boolean>(false);    
+    const [delStateForm, setDelStateForm] = useState<boolean>(false);  
+    const [addCatForm, setAddCatForm] = useState<boolean>(false);
 
     useEffect(() => {        
         getInfoUser();
-    }, []);
-
-    useEffect(() => {
-        const getCategory = async () => {
-            const cat: CategoryType[] = await useAPI.getCategory();            
-            setCatList(cat);            
-        }
-        getCategory();
-    }, []);
-
-    useEffect(() => {
-        const getStates = async () => {
-            const states: StatesType[] = await useAPI.getStates();             
-            setStateList(states);            
-        }
         getStates();
-    }, []);
+        getCategory();
+    }, []);    
 
     const handleName = (e: ChangeEvent<HTMLInputElement>) => {
         setName( e.target.value );
     }
     const handleEmail = (e: ChangeEvent<HTMLInputElement>) => {
         setEmail( e.target.value );
+    }
+    const handleNameState = (e: ChangeEvent<HTMLInputElement>) => {
+        setNameState( e.target.value );
+    }
+    const handleSlug = (e: ChangeEvent<HTMLInputElement>) => {
+        setSlug( e.target.value );
+    }
+    const handleNameCat = (e: ChangeEvent<HTMLInputElement>) => {
+        setNameCat( e.target.value );
     }
     const handleState = (e: ChangeEvent<HTMLSelectElement>) => {
         setStateLoc( e.target.value );
@@ -142,7 +158,7 @@ export const MyAcc = () => {
     const reset = () => {
         setAdInfo(undefined);
         setTitle('');
-        setCat(''); 
+        setCat('');         
         setPrice({ formattedValue: `R$ `, value: `${0}`, floatValue: 0 });
         setPriceNeg(false);
         setDesc('');
@@ -152,6 +168,7 @@ export const MyAcc = () => {
     const handleExitModal = () => {
         setModalAd(false);
         setModalUser(false);
+        setModalAdm(false);
     }
 
     const handleTrueField = () => {
@@ -169,6 +186,16 @@ export const MyAcc = () => {
         setEmail(infoUser.email); 
         setStateLoc(infoUser.state._id);
         setLoading(false);
+    }
+
+    const getStates = async () => {
+        const states: StatesType[] = await useAPI.getStates();             
+        setStateList(states);            
+    }
+
+    const getCategory = async () => {
+        const cat: CategoryType[] = await useAPI.getCategory();            
+        setCatList(cat);            
     }
 
     const loadingInfoAd = async (id: string) => {    
@@ -217,6 +244,11 @@ export const MyAcc = () => {
             getInfoUser();
         }        
     }  
+
+    const handlePanelAdm = () => {
+        reset();
+        setModalAdm(true);
+    }
 
     const handleEditUser = () => {
         reset();
@@ -275,6 +307,78 @@ export const MyAcc = () => {
                 setError(json.error.password.msg);                        
             }                
         }
+    }
+
+    const showFormAddState = () => {
+        setDisabled(true);
+        setNameState('');
+        setDelStateForm(false);
+        setAddCatForm(false);
+        setAddStateForm(!addStateForm);
+    }
+
+    const handleAddState = async (e: SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setError('');
+        setDisabled(true);
+
+        const json: JsonAddState = await useAPI.addState(nameState);
+
+        if(json.error) {
+            setError(json.error.toString());
+            setErrorModal(true);
+            setDisabled(false);
+            if(json.error.name) {
+                setError(json.error.name.msg);                                
+            }
+        }
+
+        if(json.name) {
+            getStates();
+            setNameState('');
+            alert(`O estado ${json.name} foi adicionado!`); 
+        }
+    }
+
+    const showFormDelState = () => {
+        setDisabled(true);
+        setStateLoc('');
+        setAddStateForm(false);
+        setAddCatForm(false);
+        setDelStateForm(!delStateForm);
+    }
+
+    const handleDelState = async (e: SyntheticEvent<HTMLFormElement>) => {
+        if(window.confirm('Você tem certeza que deseja deletar esse estado?')) {
+            e.preventDefault();
+            setError('');
+            setDisabled(true);
+
+            const json: JsonDelState = await useAPI.delState(stateLoc);
+            console.log(json);
+
+            if(!json.error) {                
+                getStates();
+                alert('Estado foi deletado com sucesso!');
+            } else {
+                setError(json.error);
+                setErrorModal(true);
+                setDisabled(false);
+            }
+        }
+    }
+
+    const showFormAddCat = () => {
+        setDisabled(true);
+        setSlug('');
+        setNameCat('');
+        setAddStateForm(false);
+        setDelStateForm(false);
+        setAddCatForm(!addCatForm);
+    }
+
+    const handleAddCat = () => {
+        //criar função
     }
 
     const handleDelUser = async (id: string) => {
@@ -341,13 +445,156 @@ export const MyAcc = () => {
                                 }
                                 {userInfo?.state.name}
                             </div>
+                        </div>
+                        <div className="info--container">
+                            <div className="info--key">Administrador</div>
+                            <div className="info--value">
+                                {loading &&
+                                    <C.PageFake height={30} />
+                                }
+                                {userInfo?.administrator ? 'Sim' : 'Não'}
+                            </div>
                         </div> 
                     </div>                     
                     <div className="user--tools">
-                        <button className="edit--button--user" onClick={handleEditUser}>Editar dados</button>
+                        {userInfo?.administrator &&
+                            <button className="edit--button--user" onClick={handlePanelAdm}>Painel Administrativo</button>
+                        }
+                        <button className="edit--button--user" onClick={handleEditUser}>Editar dados</button>                        
                         <button className="del--buton--user" onClick={() => handleDelUser(userInfo?._id as string)}>Excluir conta</button>
                     </div>                                      
                 </div>  
+                {modalAdm &&
+                    <C.Modal>
+                        <div className="panel--adm--container">
+                            <div className="panel--header">
+                                <PageTitle>Painel Administrativo</PageTitle>
+                                <div className="exit" onClick={handleExitModal}>❌</div>                                
+                            </div>
+                            <div className="options--list">
+                                <button onClick={showFormAddState}>Adicionar estado</button>
+                                <button onClick={showFormDelState}>Deletar estado</button>
+                                <button onClick={showFormAddCat}>Adicionar categoria</button>
+                                <button>Deletar categoria</button>
+                            </div>
+                            <div className="options--tools">
+                                {addStateForm &&
+                                    <form onSubmit={handleAddState}>
+                                        <h4>Adicionar Estado</h4>
+                                        {error !== '' && errorModal &&
+                                            <Error error={error} onClick={handleErrorExit} />
+                                        }
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                                <button type="button" className="button--true--field" onClick={handleTrueField}>{disabled ? 'Liberar Campos' : 'Bloquear Campos'}</button>                                            
+                                            </div>                        
+                                        </div>
+                                        <div className="input--container">
+                                            <div className="name--input">Nome do Estado</div>
+                                            <div className="area--input">                                                                                                
+                                                <input type="text" onChange={handleNameState} value={nameState} disabled={disabled} />                                                
+                                            </div>                        
+                                        </div>
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                            <small>Para adicionar um estado insira apenas sua sigla. Ex.: PA, RJ, SC...</small>                                             
+                                            </div>                        
+                                        </div>
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                                <input type="submit" value="Adicionar estado" disabled={disabled} />
+                                            </div>                        
+                                        </div>
+                                    </form>
+                                }  
+                                {delStateForm &&
+                                    <form onSubmit={handleDelState}>
+                                        <h4>Deletar Estado</h4>
+                                        {error !== '' && errorModal &&
+                                            <Error error={error} onClick={handleErrorExit} />
+                                        }
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                                <button type="button" className="button--true--field" onClick={handleTrueField}>{disabled ? 'Liberar Campos' : 'Bloquear Campos'}</button>                                            
+                                            </div>                        
+                                        </div>
+                                        <div className="input--container">
+                                            <div className="name--input">Nome do Estado</div>
+                                            <div className="area--input">                                                                                                
+                                                <select onChange={handleState} disabled={disabled}>
+                                                    <option></option>
+                                                    {stateList.map((item, index)=>(
+                                                        <option key={index} value={item._id}>{item.name}</option>
+                                                    ))}
+                                                </select>                                                
+                                            </div>                        
+                                        </div>
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                            <small>Tenha total certeza ao deletar um estado!</small>                                             
+                                            </div>                        
+                                        </div>
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                                <input type="submit" value="Deletar estado" disabled={disabled} />
+                                            </div>                        
+                                        </div>
+                                    </form>
+                                }  
+                                {addCatForm &&
+                                    <form onSubmit={handleAddCat}>
+                                        <h4>Adicionar Categoria</h4>
+                                        {error !== '' && errorModal &&
+                                            <Error error={error} onClick={handleErrorExit} />
+                                        }
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                                <button type="button" className="button--true--field" onClick={handleTrueField}>{disabled ? 'Liberar Campos' : 'Bloquear Campos'}</button>                                            
+                                            </div>                        
+                                        </div>
+                                        <div className="input--container">
+                                            <div className="name--input">Nome da Categoria</div>
+                                            <div className="area--input">                                                
+                                                <input type="text" onChange={handleNameCat} value={nameCat} disabled={disabled} />                                            
+                                            </div>                        
+                                        </div>                                        
+                                        <div className="input--container">
+                                            <div className="name--input">Slug da Categoria</div>
+                                            <div className="area--input">                                                
+                                                <input type="text" onChange={handleSlug} value={slug} disabled={disabled} />                                            
+                                            </div>                        
+                                        </div>
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                            <small>O slug da categoria é o nome da categoria em inglês!</small>                                             
+                                            </div>                        
+                                        </div>
+                                        <div className="input--container">
+                                            <div className="name--input">Ícone da Categoria</div>
+                                            <div className="area--input">                                                
+                                                <input type="file" accept="image/png, image/jpeg, image/jpg" multiple ref={fileFiled} disabled={disabled} />                                          
+                                            </div>                        
+                                        </div>                                        
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                                <input type="submit" value="Adicionar categoria" disabled={disabled} />
+                                            </div>                        
+                                        </div>
+                                    </form>                                                      
+                                } 
+                            </div>
+                        </div>
+                    </C.Modal>
+                }
                 {modalUser &&
                     <C.Modal>
                         <form onSubmit={handleSubmitUserEdit}>
