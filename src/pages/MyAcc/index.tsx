@@ -72,6 +72,12 @@ export const MyAcc = () => {
         error: string;
     }
 
+    type JsonAddCategory = {
+        name: string;
+        slug: string;
+        error: string;
+    }
+
     const fileFiled = useRef() as React.MutableRefObject<HTMLInputElement>;
 
     const [name, setName] = useState<string>('');
@@ -103,6 +109,7 @@ export const MyAcc = () => {
     const [addStateForm, setAddStateForm] = useState<boolean>(false);    
     const [delStateForm, setDelStateForm] = useState<boolean>(false);  
     const [addCatForm, setAddCatForm] = useState<boolean>(false);
+    const [delCatForm, setDelCatForm] = useState<boolean>(false);
 
     useEffect(() => {        
         getInfoUser();
@@ -309,11 +316,17 @@ export const MyAcc = () => {
         }
     }
 
+    const falseFormPanelItems = () => {
+       setAddStateForm(false);    
+       setDelStateForm(false);  
+       setAddCatForm(false);
+       setDelCatForm(false);
+    }
+
     const showFormAddState = () => {
         setDisabled(true);
         setNameState('');
-        setDelStateForm(false);
-        setAddCatForm(false);
+        falseFormPanelItems();
         setAddStateForm(!addStateForm);
     }
 
@@ -343,8 +356,7 @@ export const MyAcc = () => {
     const showFormDelState = () => {
         setDisabled(true);
         setStateLoc('');
-        setAddStateForm(false);
-        setAddCatForm(false);
+        falseFormPanelItems();
         setDelStateForm(!delStateForm);
     }
 
@@ -354,12 +366,12 @@ export const MyAcc = () => {
             setError('');
             setDisabled(true);
 
-            const json: JsonDelState = await useAPI.delState(stateLoc);
-            console.log(json);
+            const json: JsonDelState = await useAPI.delState(stateLoc);            
 
-            if(!json.error) {                
+            if(!json.error) {   
+                alert('Estado foi deletado com sucesso!');                             
                 getStates();
-                alert('Estado foi deletado com sucesso!');
+                setStateLoc('');                
             } else {
                 setError(json.error);
                 setErrorModal(true);
@@ -372,13 +384,67 @@ export const MyAcc = () => {
         setDisabled(true);
         setSlug('');
         setNameCat('');
-        setAddStateForm(false);
-        setDelStateForm(false);
+        falseFormPanelItems();
         setAddCatForm(!addCatForm);
     }
 
-    const handleAddCat = () => {
-        //criar função
+    const handleAddCat = async (e: SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setDisabled(true);
+        setError('');         
+        
+        const data = new FormData();
+        data.append('name', nameCat);
+        data.append('slug', slug);        
+
+        if(fileFiled.current.files) {
+            for(let i = 0; i < fileFiled.current.files.length; i++) {
+                data.append('img', fileFiled.current.files[i]);
+            }
+        }       
+
+        const json: JsonAddCategory = await useAPI.addCategory(data);
+        
+        if(json.error) {
+            setErrorModal(true);
+            setError(json.error);
+            setDisabled(false);
+        } else {
+            alert(`A categoria ${json.name} foi adicionada com sucesso!`);
+            getCategory();
+            setNameCat('');
+            setSlug('');
+        }        
+    }
+
+    const showFormDelCat = () => {
+        setDisabled(true);
+        setCat('');
+        falseFormPanelItems();
+        setDelCatForm(!delCatForm);
+    }
+
+    const handleDelCat = async (e: SyntheticEvent<HTMLFormElement>) => {
+        if(window.confirm('Você tem total certeza que deseja excluir essa categoria?')) {
+            e.preventDefault();
+            setError('');
+            setDisabled(true);
+
+            const json: FetchDeleteType = await useAPI.delCategory(cat);
+            console.log(json);
+
+            if(json.error) {
+                setErrorModal(true);
+                setError(json.error);
+                setDisabled(false);
+            } else {
+                alert('A categoria foi deletada com sucesso!');
+                getCategory();
+                setCat('');
+            }
+        } else {
+            return;
+        }        
     }
 
     const handleDelUser = async (id: string) => {
@@ -418,7 +484,7 @@ export const MyAcc = () => {
             <C.PageArea>
                 <h3>Configurações gerais do perfil</h3>
                 <div className="user--info">
-                    <div className="user--info--data">
+                    <div className="user--info--data">                        
                         <div className="info--container">
                             <div className="info--key">Nome</div>
                             <div className="info--value">
@@ -448,11 +514,11 @@ export const MyAcc = () => {
                         </div>
                         <div className="info--container">
                             <div className="info--key">Administrador</div>
-                            <div className="info--value">
+                            <div className={userInfo?.administrator ? 'info--value green' : 'info--value red'}>
                                 {loading &&
                                     <C.PageFake height={30} />
                                 }
-                                {userInfo?.administrator ? 'Sim' : 'Não'}
+                                {userInfo?.administrator.toString().toUpperCase()}
                             </div>
                         </div> 
                     </div>                     
@@ -475,7 +541,7 @@ export const MyAcc = () => {
                                 <button onClick={showFormAddState}>Adicionar estado</button>
                                 <button onClick={showFormDelState}>Deletar estado</button>
                                 <button onClick={showFormAddCat}>Adicionar categoria</button>
-                                <button>Deletar categoria</button>
+                                <button onClick={showFormDelCat}>Deletar categoria</button>
                             </div>
                             <div className="options--tools">
                                 {addStateForm &&
@@ -580,7 +646,7 @@ export const MyAcc = () => {
                                         <div className="input--container">
                                             <div className="name--input">Ícone da Categoria</div>
                                             <div className="area--input">                                                
-                                                <input type="file" accept="image/png, image/jpeg, image/jpg" multiple ref={fileFiled} disabled={disabled} />                                          
+                                                <input type="file" accept="image/png, image/jpeg, image/jpg" ref={fileFiled} disabled={disabled} />                                          
                                             </div>                        
                                         </div>                                        
                                         <div className="input--container">
@@ -591,6 +657,43 @@ export const MyAcc = () => {
                                         </div>
                                     </form>                                                      
                                 } 
+                                {delCatForm &&
+                                    <form onSubmit={handleDelCat}>
+                                        <h4>Deletar Categoria</h4>
+                                        {error !== '' && errorModal &&
+                                            <Error error={error} onClick={handleErrorExit} />
+                                        }
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                                <button type="button" className="button--true--field" onClick={handleTrueField}>{disabled ? 'Liberar Campos' : 'Bloquear Campos'}</button>                                            
+                                            </div>                        
+                                        </div>                                        
+                                        <div className="input--container">
+                                                <div className="name--input">Nome da Categoria</div>
+                                                <div className="area--input">                         
+                                                    <select onChange={handleCat} value={cat} disabled={disabled}>
+                                                        <option></option>
+                                                        {catList.map((item, index)=>(
+                                                            <option key={index} value={item._id}>{item.name}</option>
+                                                        ))}
+                                                    </select>                                  
+                                                </div>                        
+                                            </div>
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                            <small>Tenha total certeza ao deletar uma categoria!</small>                                             
+                                            </div>                        
+                                        </div>
+                                        <div className="input--container">
+                                            <div className="name--input"></div>
+                                            <div className="area--input">
+                                                <input type="submit" value="Deletar categoria" disabled={disabled} />
+                                            </div>                        
+                                        </div>
+                                    </form>
+                                }
                             </div>
                         </div>
                     </C.Modal>

@@ -145,6 +145,18 @@ export const useAPI = {
         const json = await apiFetchGET('/category/list');
         return json.category;
     },
+    addCategory: async (formData: FormData) => {
+        const json = await apiFetchFormData(
+            '/category/add',
+            formData,
+            'POST'
+        );
+        return json;
+    },
+    delCategory: async (id: string) => {
+        const json = await apiFetchDELETE(`/category/${id}`);
+        return json;
+    },
     getAds: async (options: AdsOptionsType) => {
         const json = await apiFetchGET(
             '/ad/list',

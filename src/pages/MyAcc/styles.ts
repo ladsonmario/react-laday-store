@@ -4,7 +4,16 @@ export const PageArea = styled.div`
     padding: 30px;
     background-color: #fff;
     box-shadow: 0 0 5px #999;
-    border-radius: 3px;    
+    border-radius: 3px; 
+    
+    .red {
+        color: #f00;
+        font-weight: bold;
+    }
+    .green {
+        color: #090;
+        font-weight: bold;
+    }
 
     .user--info {
         border-top: 1px solid #ddd;
@@ -138,7 +147,7 @@ export const PageArea = styled.div`
             .info--container {                
     
                 .info--key {
-                    width: 60px;
+                    width: auto;
                     text-align: start;                    
                 }
             }
