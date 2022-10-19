@@ -4,14 +4,14 @@ import { PageContainer, PageTitle } from '../../components/MainComponents';
 import { Error } from '../../components/partials/Error';
 import * as C from './styles';
 import { useAPI } from '../../helpers/api';
-import { CategoryType } from '../../types/types';
-import { NumericFormat } from 'react-number-format';
+import { CategoryType, PriceValuesType } from '../../types/types';
+import { NumericFormat, OnValueChange } from 'react-number-format';
 
 export const AddAd = () => { 
     type JsonAddAd = {
         error: string;
         id: string;
-    }
+    }    
     
     const navigate = useNavigate();
     const fileFiled = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -39,7 +39,7 @@ export const AddAd = () => {
     const handleCat = (e: ChangeEvent<HTMLSelectElement>) => {
         setCat( e.target.value );
     }
-    const handlePrice = (values: any) => {
+    const handlePrice = (values: PriceValuesType) => {        
         const { value } = values;
         setPrice(value);
     }
@@ -117,7 +117,7 @@ export const AddAd = () => {
                                 thousandSeparator="."
                                 disabled={disabled || priceNeg}
                                 value={price.value}
-                                onValueChange={handlePrice}
+                                onValueChange={handlePrice as OnValueChange}
                                 placeholder="R$ "
                             />
                         </div>                        

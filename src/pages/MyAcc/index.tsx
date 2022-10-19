@@ -4,8 +4,8 @@ import { PageContainer, PageTitle } from '../../components/MainComponents';
 import { Error } from '../../components/partials/Error';
 import { formatDate, convertRealFormat } from '../../helpers/assistant';
 import { doLogoff } from '../../helpers/AuthHandler';
-import { CategoryType, AdType, StatesType } from '../../types/types';
-import { NumericFormat } from 'react-number-format';
+import { CategoryType, AdType, StatesType, PriceValuesType } from '../../types/types';
+import { NumericFormat, OnValueChange } from 'react-number-format';
 import editSvg from './images/edit.svg';
 import trashSvg from './images/trash.svg';
 import fileSvg from './images/file.svg';
@@ -147,7 +147,7 @@ export const MyAcc = () => {
     const handleCat = (e: ChangeEvent<HTMLSelectElement>) => {
         setCat( e.target.value );
     }
-    const handlePrice = (values: any) => {          
+    const handlePrice = (values: PriceValuesType) => {          
         const { value } = values;
         setPrice(value);
     }
@@ -884,7 +884,7 @@ export const MyAcc = () => {
                                                             thousandSeparator="."
                                                             disabled={disabled || priceNeg}
                                                             value={price.value}
-                                                            onValueChange={handlePrice}
+                                                            onValueChange={handlePrice as OnValueChange}
                                                             placeholder="R$ "
                                                         />
                                                     }                                            

@@ -70,3 +70,9 @@ export type AdsOptionsType = {
     cat?: string;
     state?: string;
 }
+
+export type PriceValuesType = {
+    formattedValue: string;
+    value: string;
+    floatValue: number;
+}
